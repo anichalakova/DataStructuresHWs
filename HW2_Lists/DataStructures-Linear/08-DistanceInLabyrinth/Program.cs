@@ -3,7 +3,7 @@
     using System;
     class Program
     {
-        // I realize this is a very unefficient algorythm, but I wanted to try whether I can find ANY solution to this task. Now I know I should've used Queue to enqueue adjacent matrix nodes in it instead.
+        // TODO: Change the algorithm using Queue to enqueue and process adjacent matrix nodes
 
         private static int rows = 10;
         private static int columns = 10;
