@@ -8,15 +8,31 @@ namespace _02_TraverseAndSaveDirectoryContents
 {
     class Folder
     {
-        internal string name;
-        internal List<File> files;
-        internal List<Folder> childFolders;
+        private string name;
+        private List<File> files;
+        private List<Folder> childFolders;
 
         public Folder(string name)
         {
-            this.name = name;
-            this.files = new List<File>();
-            this.childFolders = new List<Folder>();
+            this.Name = name;
+            this.Files = new List<File>();
+            this.ChildFolders = new List<Folder>();
+        }
+        public string Name
+        {
+            get { return this.name; }
+            set { this.name = value; }
+        }
+        public List<File> Files
+        {
+            get { return this.files; }
+            set { this.files = value; }
+        }
+
+        public List<Folder> ChildFolders
+        {
+            get { return this.childFolders; }
+            set { this.childFolders = value; }
         }
     }
 }

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace _02_TraverseAndSaveDirectoryContents
+﻿namespace _02_TraverseAndSaveDirectoryContents
 {
     class File
     {
@@ -13,8 +7,18 @@ namespace _02_TraverseAndSaveDirectoryContents
 
         public File(string name, long size = 0)
         {
-            this.name = name;
-            this.size = size;
+            this.Name = name;
+            this.Size = size;
+        }
+
+        public string Name
+        {
+            get { return this.name; }
+            set { this.name = value; }
+        }
+        public long Size {
+            get { return this.size; }
+            set { this.size = value; }
         }
     }
 }
