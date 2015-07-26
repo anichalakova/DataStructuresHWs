@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlTypes;
 using System.IO;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using DataStructures_Trees;
 
 namespace _02_TraverseAndSaveDirectoryContents
 {
@@ -14,30 +7,38 @@ namespace _02_TraverseAndSaveDirectoryContents
     {
         static void Main()
         {
-            var rootDirectory = Directory.CreateDirectory("D:\\Install");
-            var folderTree = new Folder(rootDirectory.Name);
-            Console.WriteLine(string.Format("Folder size is: {0}", TraverseDirectory(rootDirectory, folderTree)));
+            // Choose a valid directory on your computer that you have authorized access to:
+            var rootDirectory = new DirectoryInfo("D:\\Install");
+
+            var rootFolder = new Folder(rootDirectory.FullName);
+            
+            Console.WriteLine(string.Format("Folder {0} has size: {1} bytes", rootFolder.name, TraverseDirectory(rootFolder)));
             ;
         }
 
-        private static long TraverseDirectory(DirectoryInfo rootDirectory, Folder currentFolder)
+        private static long TraverseDirectory(Folder currentFolder)
         {
             try
             {
-                var files = rootDirectory.GetFiles();
-                var childDirectories = rootDirectory.GetDirectories();
+                var currentDirectory = new DirectoryInfo(currentFolder.name);
+                var files = currentDirectory.GetFiles();
+                var childDirectories = currentDirectory.GetDirectories();
                 long size = 0;
 
                 foreach (var file in files)
                 {
-                    currentFolder.files.Add(new File(file.Name, file.Length));
+                    currentFolder.files.Add(new File(file.FullName, file.Length));
                     size += file.Length;
                 }
 
                 foreach (var directory in childDirectories)
                 {
-                    currentFolder.childFolders.Add(new Folder(directory.Name));
-                    TraverseDirectory(directory, currentFolder);
+                    currentFolder.childFolders.Add(new Folder(directory.FullName));
+                }
+
+                foreach (var childFolder in currentFolder.childFolders)
+                {
+                    size += TraverseDirectory(childFolder);
                 }
                 return size;
             }
