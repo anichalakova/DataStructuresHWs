@@ -1,0 +1,164 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace DataStructures_TreeTraversal
+{
+    class Program
+    {
+        static int nodesCount;
+        static List<int>[] graph;
+        static bool[] visited;
+
+        static List<int>[] ReadGraph()
+        {
+            int n = int.Parse(Console.ReadLine());
+            nodesCount = n;
+            var graph = new List<int>[n];
+            visited = new bool[graph.Length + 1];
+            for (int i = 0; i < n; i++)
+            {
+                graph[i] =
+                    Console.ReadLine()
+                        .Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
+                        .Select(int.Parse)
+                        .ToList();
+            }
+            return graph;
+        }
+
+        static Node<int> DepthFirstSearch(Node<int> currentNode)
+        {
+            if (currentNode.Parent != null && !visited[currentNode.Value])
+            {
+                {
+                    visited[currentNode.Value] = true;
+                    currentNode = currentNode.Parent;
+                    DepthFirstSearch(currentNode);
+                }
+            }
+            else if (currentNode.Parent == null)
+            {
+                return currentNode;
+            }
+            return null;
+        }
+
+        static void Main()
+        {
+            graph = ReadGraph();
+
+            IList<Node<int>> allNodes = new List<Node<int>>();
+            for (int i = 0; i < nodesCount+1; i++)
+            {
+                allNodes.Add(new Node<int>(i, null));
+            }
+
+            for (int i = 0; i < nodesCount; i++)
+            {
+                var parentNode = allNodes.First(n => n.Value == graph[i][0]);
+                var childNode = allNodes.First(n => n.Value == graph[i][1]);
+                childNode.Parent = parentNode;
+            }
+
+            var result = new List<Node<int>>();
+            for (int i = 0; i <nodesCount; i++)
+            {
+                var root = DepthFirstSearch(allNodes[i]);
+                if (root != null)
+                {
+                    result.Add(root);
+                }
+            }
+            //result = allNodes.Where(n => !childNodes.Any(ch => ch.Value == n.Value)).ToList();
+            PrintOutput(result);
+        }
+
+        private static void PrintOutput(List<Node<int>> result)
+        {
+            if (result.Count == 1)
+            {
+                Console.WriteLine(result[0].Value);
+            }
+            else if (result.Count > 1)
+            {
+                Console.WriteLine("Forest is not a tree!");
+            }
+            else
+            {
+                Console.WriteLine("No root!");
+            }
+        }
+    }
+}
+
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace DataStructures_TreeTraversal
+{
+    class Program
+    {
+        static int nodesCount;
+        static List<int>[] graph;
+
+        static List<int>[] ReadGraph()
+        {
+            int n = int.Parse(Console.ReadLine());
+            nodesCount = n;
+            var graph = new List<int>[n];
+            for (int i = 0; i < n; i++)
+            {
+                graph[i] =
+                    Console.ReadLine()
+                        .Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
+                        .Select(int.Parse)
+                        .ToList();
+            }
+            return graph;
+        }
+
+        private static void PrintOutput(List<int> result)
+        {
+            if (result.Count == 1)
+            {
+                Console.WriteLine(result[0]);
+            }
+            else if (result.Count > 1)
+            {
+                Console.WriteLine("Forest is not a tree!");
+            }
+            else
+            {
+                Console.WriteLine("No root!");
+            }
+        }
+
+        static void Main()
+        {
+            graph = ReadGraph();
+
+            IList<int> allNodes = new List<int>();
+            IList<int> parentNodes = new List<int>();
+            IList<int> childNodes = new List<int>();
+
+            for (int i = 0; i < nodesCount+1; i++)
+            {
+                allNodes.Add(i);
+            }
+
+            for (int i = 0; i < nodesCount; i++)
+            {
+                parentNodes.Add(graph[i][0]);
+                childNodes.Add(graph[i][1]);
+            }
+
+            var result = new List<int>();
+            result = allNodes.Except(childNodes).ToList();
+            PrintOutput(result);
+        }
+    }
+}
